@@ -9,15 +9,15 @@ export default function App() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#0f172a',
-      color: '#ffffff',
+      backgroundColor: '#0f172a', // Forest Court Dark Slate Canvas
+      color: '#f8fafc',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       display: 'flex',
       flexDirection: 'column'
     }}>
       {/* Header Bar */}
       <header style={{
-        padding: '12px 24px',
+        padding: '14px 28px',
         backgroundColor: '#1e293b',
         borderBottom: '1px solid #334155',
         display: 'flex',
@@ -25,29 +25,26 @@ export default function App() {
         alignItems: 'center'
       }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#ffffff', letterSpacing: '0.05em' }}>
-            Pickleball Service Management - Perez, Vicuña, Avila
+          <h1 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#f9f9f9', letterSpacing: '0.05em' }}>
+            Pickleball Service Managment System - Perez, Vicuña, Avila
           </h1>
           <span style={{ fontSize: '16px', color: '#94a3b8' }}>Simulation</span>
         </div>
 
-        {/* Dual Control Buttons */}
+        {/* Dual Control Switchers */}
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           
           <button
             onClick={toggleViewType}
             style={{
               backgroundColor: '#334155',
-              color: '#ffffff',
+              color: '#f8fafc',
               border: '1px solid #475569',
-              padding: '6px 14px',
+              padding: '7px 16px',
               borderRadius: '9999px',
               fontSize: '12px',
               fontWeight: '600',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
+              cursor: 'pointer'
             }}
           >
             <span>{viewType === 'mobile' ? 'Mobile' : 'Desktop Web'}</span>
@@ -57,9 +54,9 @@ export default function App() {
             onClick={toggleRole}
             style={{
               backgroundColor: '#334155',
-              color: '#ffffff',
+              color: '#f8fafc',
               border: '1px solid #475569',
-              padding: '6px 14px',
+              padding: '7px 16px',
               borderRadius: '9999px',
               fontSize: '12px',
               fontWeight: '600',
@@ -73,7 +70,7 @@ export default function App() {
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              backgroundColor: currentRole === 'player' ? '#4ade80' : '#fbbf24'
+              backgroundColor: currentRole === 'player' ? '#10b981' : '#f59e0b'
             }}></span>
             Role: <strong style={{ textTransform: 'capitalize' }}>{currentRole} View</strong>
           </button>
@@ -81,7 +78,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main View Area */}
+      {/* Main Container */}
       <main style={{ flex: 1, padding: '20px' }}>
         {currentRole === 'player' ? (
           <PlayerDashboard />
@@ -93,9 +90,10 @@ export default function App() {
             borderRadius: '20px',
             padding: '32px',
             textAlign: 'center',
-            border: '1px solid #334155'
+            border: '1px solid #334155',
+            boxShadow: '0 20px 25px -5px rgba(0,0,0,0.3)'
           }}>
-            <h2 style={{ color: '#fbbf24', margin: 0, fontSize: '18px', fontWeight: '700' }}>
+            <h2 style={{ color: '#f59e0b', margin: 0, fontSize: '18px', fontWeight: '700' }}>
               Admin Mode unavailable at the moment
             </h2>
           </div>

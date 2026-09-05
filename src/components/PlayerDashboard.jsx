@@ -38,13 +38,14 @@ export default function PlayerDashboard() {
       padding: '20px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
+      {/* Outer Shell / Frame */}
       <div style={{
         width: '100%',
         maxWidth: isDesktop ? '1100px' : '390px',
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f8fafc', // Soft Off-White Frame Interior
         borderRadius: isDesktop ? '24px' : '40px',
         padding: isDesktop ? '32px' : '20px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6)',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
         border: isDesktop ? '2px solid #334155' : '8px solid #334155',
         boxSizing: 'border-box',
         position: 'relative',
@@ -55,7 +56,7 @@ export default function PlayerDashboard() {
           <div style={{
             width: '110px',
             height: '22px',
-            backgroundColor: '#000000',
+            backgroundColor: '#0f172a',
             borderRadius: '12px',
             margin: '0 auto 20px auto'
           }}></div>
@@ -78,7 +79,8 @@ export default function PlayerDashboard() {
               alignItems: 'center',
               justifyContent: 'space-between',
               marginBottom: '16px',
-              border: '1px solid #e5e7eb'
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div style={{
@@ -99,14 +101,14 @@ export default function PlayerDashboard() {
                   />
                 </div>
                 <div>
-                  <h2 style={{ margin: 0, fontSize: '20px', fontWeight: '700', color: '#1f2937' }}>{profile.fullName}</h2>
+                  <h2 style={{ margin: 0, fontSize: '20px', fontWeight: '800', color: '#0f172a' }}>{profile.fullName}</h2>
                   <span style={{
                     display: 'inline-block',
                     marginTop: '6px',
-                    backgroundColor: '#4ade80',
-                    color: '#064e3b',
+                    backgroundColor: '#dcfce7',
+                    color: '#166534',
                     fontSize: '12px',
-                    fontWeight: '700',
+                    fontWeight: '800',
                     padding: '3px 12px',
                     borderRadius: '9999px'
                   }}>
@@ -157,92 +159,99 @@ export default function PlayerDashboard() {
 
             {/* Membership Banner */}
             <div style={{
-              backgroundColor: '#032533',
+              backgroundColor: '#0f172a', // Deep Forest Court Dark Navy
               color: '#ffffff',
               borderRadius: '16px',
               padding: '20px',
-              marginBottom: '16px'
+              marginBottom: '16px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
             }}>
               <h2 style={{ margin: '0 0 6px 0', fontSize: '22px', fontWeight: '700' }}>
-                Membership: <span style={{ color: profile.isMember ? '#4ade80' : '#f87171' }}>
+                Membership: <span style={{ color: profile.isMember ? '#34d399' : '#f87171' }}>
                   {profile.isMember ? 'Active' : 'Inactive'}
                 </span>
               </h2>
-              <p style={{ margin: 0, fontSize: '13px', color: '#9ca3af' }}>
+              <p style={{ margin: 0, fontSize: '13px', color: '#94a3b8' }}>
                 Expires in: {profile.membershipExpiry}
               </p>
             </div>
 
-            {/* Rental Tiles */}
+            {/* Rental Cards */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+              
+              {/* Equipment Card */}
               <div 
                 onClick={() => setActiveModal('equipment')}
                 style={{
-                  backgroundColor: '#e5e7eb',
+                  backgroundColor: '#ffffff',
                   borderRadius: '16px',
                   padding: '14px',
                   position: 'relative',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #e2e8f0',
                   height: '130px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   boxSizing: 'border-box',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}
               >
                 <span style={{
-                  position: 'absolute', top: '8px', right: '8px',
-                  backgroundColor: '#86efac', color: '#064e3b',
-                  fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '6px'
+                  position: 'absolute', top: '10px', right: '10px',
+                  backgroundColor: '#dcfce7', color: '#166534',
+                  fontSize: '10px', fontWeight: '800', padding: '3px 8px', borderRadius: '6px'
                 }}>
                   {equipments} Available
                 </span>
-                <div style={{ height: '32px' }}></div>
+                <div style={{ fontSize: '28px', marginTop: '4px' }}>🏓</div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '700', color: '#111827' }}>Equipments</h3>
-                  <p style={{ margin: 0, fontSize: '11px', color: '#6b7280', fontStyle: 'italic' }}>Paddles & Balls</p>
+                  <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>Equipments</h3>
+                  <p style={{ margin: 0, fontSize: '11px', color: '#64748b' }}>Paddles, Balls & Machines</p>
                 </div>
               </div>
 
+              {/* Court Card */}
               <div 
                 onClick={() => setActiveModal('court')}
                 style={{
-                  backgroundColor: '#e5e7eb',
+                  backgroundColor: '#ffffff',
                   borderRadius: '16px',
                   padding: '14px',
                   position: 'relative',
-                  border: '1px solid #d1d5db',
+                  border: '2px solid #e2e8f0',
                   height: '130px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   boxSizing: 'border-box',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}
               >
                 <span style={{
-                  position: 'absolute', top: '8px', right: '8px',
-                  backgroundColor: '#86efac', color: '#064e3b',
-                  fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '6px'
+                  position: 'absolute', top: '10px', right: '10px',
+                  backgroundColor: '#dcfce7', color: '#166534',
+                  fontSize: '10px', fontWeight: '800', padding: '3px 8px', borderRadius: '6px'
                 }}>
                   {openCourtsCount} Open
                 </span>
-                <div style={{ height: '32px' }}></div>
+                <div style={{ fontSize: '28px', marginTop: '4px' }}>🏟️</div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '700', color: '#111827' }}>Courts</h3>
-                  <p style={{ margin: 0, fontSize: '11px', color: '#6b7280', fontStyle: 'italic' }}>Available Court</p>
+                  <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>Courts</h3>
+                  <p style={{ margin: 0, fontSize: '11px', color: '#64748b' }}>Indoor & Outdoor</p>
                 </div>
               </div>
+
             </div>
 
-            {/* Play Match Action Bar */}
+            {/* Main Action Bar */}
             {!isQueuing ? (
               <button 
                 onClick={() => setActiveModal('matchmaking')}
                 style={{
                   width: '100%',
-                  backgroundColor: '#22c55e',
+                  backgroundColor: '#10b981', // Forest Emerald Green
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '16px',
@@ -250,7 +259,8 @@ export default function PlayerDashboard() {
                   fontSize: '18px',
                   fontWeight: '800',
                   letterSpacing: '0.05em',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 6px -1px rgba(16, 185, 129, 0.3)'
                 }}
               >
                 PLAY MATCH
@@ -258,7 +268,7 @@ export default function PlayerDashboard() {
             ) : (
               <div style={{
                 width: '100%',
-                backgroundColor: '#f59e0b',
+                backgroundColor: '#f59e0b', // Warm Amber
                 color: '#ffffff',
                 borderRadius: '16px',
                 padding: '12px 16px',
@@ -304,17 +314,18 @@ export default function PlayerDashboard() {
           {/* Right Column */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: '#111827' }}>Game History</h3>
-              <span style={{ fontSize: '12px', color: '#6b7280' }}>{matchHistory.length} Matches Logged</span>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '800', color: '#0f172a' }}>Game History</h3>
+              <span style={{ fontSize: '12px', color: '#64748b' }}>{matchHistory.length} Matches Logged</span>
             </div>
 
             <div style={{
-              backgroundColor: '#e5e7eb',
+              backgroundColor: '#ffffff',
               borderRadius: '16px',
-              border: '1px solid #d1d5db',
+              border: '1px solid #e2e8f0',
               overflow: 'hidden',
-              maxHeight: isDesktop ? '380px' : '180px',
-              overflowY: 'auto'
+              maxHeight: isDesktop ? '380px' : '220px',
+              overflowY: 'auto',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
             }}>
               {matchHistory.map((game, idx) => (
                 <div key={game.id} style={{
@@ -322,7 +333,7 @@ export default function PlayerDashboard() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  borderBottom: idx !== matchHistory.length - 1 ? '1px solid #d1d5db' : 'none'
+                  borderBottom: idx !== matchHistory.length - 1 ? '1px solid #f1f5f9' : 'none'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{
@@ -336,12 +347,12 @@ export default function PlayerDashboard() {
                         onError={(e) => { e.target.style.display = 'none'; }}
                       />
                     </div>
-                    <span style={{ fontSize: '15px', fontWeight: '600', color: '#1f2937' }}>{game.opponentName}</span>
+                    <span style={{ fontSize: '15px', fontWeight: '700', color: '#0f172a' }}>{game.opponentName}</span>
                   </div>
                   <span style={{
-                    fontSize: '12px', fontWeight: '700', padding: '4px 12px', borderRadius: '6px',
-                    backgroundColor: game.result === 'WIN' ? '#86efac' : '#fca5a5',
-                    color: game.result === 'WIN' ? '#064e3b' : '#7f1d1d'
+                    fontSize: '12px', fontWeight: '800', padding: '4px 12px', borderRadius: '6px',
+                    backgroundColor: game.result === 'WIN' ? '#dcfce7' : '#fee2e2',
+                    color: game.result === 'WIN' ? '#166534' : '#991b1b'
                   }}>
                     {game.result}
                   </span>
@@ -352,11 +363,11 @@ export default function PlayerDashboard() {
 
         </div>
 
-        {/* --- NOTIFICATIONS MODAL --- */}
+        {/* NOTIFICATIONS MODAL */}
         {activeModal === 'notifications' && (
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: isDesktop ? '24px' : '32px',
+            backgroundColor: 'rgba(15, 23, 42, 0.75)', borderRadius: isDesktop ? '24px' : '32px',
             display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px', zIndex: 50
           }}>
             <div style={{
@@ -386,8 +397,7 @@ export default function PlayerDashboard() {
                     fontSize: '14px',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
+                    justifyContent: 'center'
                   }}
                 >✕</button>
               </div>
@@ -449,11 +459,11 @@ export default function PlayerDashboard() {
           </div>
         )}
 
-        {/* --- MATCH PLAY MODAL --- */}
+        {/* MATCH PLAY MODAL */}
         {activeModal === 'matchmaking' && (
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: isDesktop ? '24px' : '32px',
+            backgroundColor: 'rgba(15, 23, 42, 0.75)', borderRadius: isDesktop ? '24px' : '32px',
             display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px', zIndex: 50
           }}>
             <div style={{
@@ -483,8 +493,7 @@ export default function PlayerDashboard() {
                     fontSize: '14px',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
+                    justifyContent: 'center'
                   }}
                 >✕</button>
               </div>
@@ -537,8 +546,8 @@ export default function PlayerDashboard() {
               }}>
                 <span style={{ fontSize: '12px', fontWeight: '600', color: '#475569' }}>Your MMR Rating:</span>
                 <span style={{
-                  backgroundColor: '#4ade80',
-                  color: '#064e3b',
+                  backgroundColor: '#dcfce7',
+                  color: '#166534',
                   borderRadius: '9999px',
                   padding: '4px 12px',
                   fontSize: '12px',
@@ -552,7 +561,7 @@ export default function PlayerDashboard() {
                 onClick={handleConfirmMatchNow}
                 style={{
                   width: '100%',
-                  backgroundColor: '#22c55e',
+                  backgroundColor: '#10b981',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '16px',
@@ -569,14 +578,14 @@ export default function PlayerDashboard() {
           </div>
         )}
 
-        {/* --- EQUIPMENTS RENTAL MODAL --- */}
+        {/* EQUIPMENTS MODAL */}
         {activeModal === 'equipment' && (
           <EquipmentRentalModal 
             onClose={() => setActiveModal(null)} 
           />
         )}
 
-        {/* --- COURTS RENTAL MODAL --- */}
+        {/* COURTS MODAL */}
         {activeModal === 'court' && (
           <CourtRentalModal 
             onClose={() => setActiveModal(null)} 

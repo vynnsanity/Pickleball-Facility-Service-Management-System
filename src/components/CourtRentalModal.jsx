@@ -14,7 +14,7 @@ export default function CourtRentalModal({ onClose }) {
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: '32px',
+      backgroundColor: 'rgba(15, 23, 42, 0.75)', borderRadius: '32px',
       display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '12px', zIndex: 50
     }}>
       <div style={{
@@ -32,7 +32,7 @@ export default function CourtRentalModal({ onClose }) {
       }}>
         
         {/* Header */}
-        <div style={{ padding: '16px 16px 12px 16px', backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+        <div style={{ padding: '16px 16px 12px 16px', backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '800', color: '#0f172a' }}>Courts Reservation</h3>
@@ -52,14 +52,13 @@ export default function CourtRentalModal({ onClose }) {
                 fontSize: '14px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
+                justifyContent: 'center'
               }}
             >✕</button>
           </div>
         </div>
 
-        {/* Category Filters & Duration Dropdown */}
+        {/* Filter Bar */}
         <div style={{ padding: '10px 16px', backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
@@ -107,7 +106,7 @@ export default function CourtRentalModal({ onClose }) {
           </div>
         </div>
 
-        {/* 5 Court Item Cards */}
+        {/* Court List */}
         <div style={{ padding: '12px 16px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {filteredCourts.map(court => {
             const totalPrice = court.baseRate * durationHours;
@@ -120,8 +119,8 @@ export default function CourtRentalModal({ onClose }) {
                   borderRadius: '16px',
                   padding: '12px',
                   border: '2px solid #0f172a',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                  opacity: !court.open ? 0.6 : 1
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
+                  opacity: !court.open ? 0.65 : 1
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
@@ -165,7 +164,7 @@ export default function CourtRentalModal({ onClose }) {
                     onClick={() => bookCourt(court.id, durationHours)}
                     disabled={!court.open}
                     style={{
-                      backgroundColor: !court.open ? '#94a3b8' : '#0f172a',
+                      backgroundColor: !court.open ? '#94a3b8' : '#10b981',
                       color: '#ffffff',
                       border: 'none',
                       borderRadius: '10px',
@@ -183,8 +182,7 @@ export default function CourtRentalModal({ onClose }) {
           })}
         </div>
 
-        {/* Footer */}
-        <div style={{ padding: '12px 16px', backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0', textAlign: 'center' }}>
+        <div style={{ padding: '12px 16px', backgroundColor: '#ffffff', borderTop: '1px solid #e2e8f0', textAlign: 'center' }}>
           <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '500' }}>
             Courts resurfaced and maintained daily
           </span>

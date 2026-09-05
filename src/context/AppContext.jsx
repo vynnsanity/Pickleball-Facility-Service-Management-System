@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 const INITIAL_PROFILE = {
-  fullName: 'Venedict',
+  fullName: 'Venedict Perez',
   avatarUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=Venedict',
   mmr: 3294,
   isMember: true,
@@ -13,9 +13,9 @@ const INITIAL_PROFILE = {
 
 const INITIAL_HISTORY = [
   { id: 1, opponentName: 'Chris', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Chris' },
-  { id: 2, opponentName: 'Nazzer', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Nazzer' },
+  { id: 2, opponentName: 'Nazzer', result: 'LOSS', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Nazzer' },
   { id: 3, opponentName: 'Soffy', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soffy' },
-  { id: 4, opponentName: 'Kier', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Kier' },
+  { id: 4, opponentName: 'Kier', result: 'LOSS', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Kier' },
   { id: 5, opponentName: 'Owen', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Owen' },
 ];
 
@@ -61,7 +61,6 @@ const INITIAL_INVENTORY = [
   }),
 ];
 
-// Initial 5 Courts Catalog
 const INITIAL_COURTS = [
   { id: 'court-1', name: 'Court 1', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Climate-controlled court with LED tournament lighting.', open: true, baseRate: 250 },
   { id: 'court-2', name: 'Court 2', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Standard indoor court with high-visibility boundary lines.', open: true, baseRate: 250 },
@@ -108,7 +107,6 @@ export function AppProvider({ children }) {
 
   const cancelQueue = () => setIsQueuing(false);
 
-  // Rent Equipment Action
   const rentItem = (itemId, durationHours) => {
     const item = inventory.find(i => i.id === itemId);
     if (!item || item.isRented) return;
@@ -136,7 +134,6 @@ export function AppProvider({ children }) {
     alert(`Rental Pending! Request for ${item.name} sent for admin approval.`);
   };
 
-  // Book Court Action
   const bookCourt = (courtId, durationHours) => {
     const court = courts.find(c => c.id === courtId);
     if (!court || !court.open) return;
@@ -164,7 +161,6 @@ export function AppProvider({ children }) {
     alert(`Court Booking Pending! Request for ${court.name} sent for admin approval.`);
   };
 
-  // Cancel Pending Request (Works for both Equipment and Courts)
   const cancelRequest = (notifId, targetId, itemType) => {
     setNotifications(prev => prev.filter(n => n.id !== notifId));
 
