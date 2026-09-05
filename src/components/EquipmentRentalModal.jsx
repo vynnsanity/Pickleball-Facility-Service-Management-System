@@ -13,16 +13,16 @@ export default function EquipmentRentalModal({ onClose }) {
 
   return (
     <div style={{
-      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.75)', borderRadius: '32px',
-      display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '12px', zIndex: 50
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(15, 23, 42, 0.75)',
+      display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '12px', zIndex: 100
     }}>
       <div style={{
         backgroundColor: '#f1f5f9',
         borderRadius: '24px',
         width: '100%',
         maxWidth: '360px',
-        maxHeight: '92%',
+        maxHeight: '92vh',
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
@@ -110,6 +110,7 @@ export default function EquipmentRentalModal({ onClose }) {
         <div style={{ padding: '12px 16px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {filteredItems.map(item => {
             const totalPrice = item.baseRate * durationHours;
+            const isUnavailable = item.isRented || item.isPending;
 
             return (
               <div 
@@ -120,7 +121,7 @@ export default function EquipmentRentalModal({ onClose }) {
                   padding: '12px',
                   border: '2px solid #0f172a',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
-                  opacity: item.isRented ? 0.65 : 1
+                  opacity: isUnavailable ? 0.65 : 1
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
@@ -150,31 +151,31 @@ export default function EquipmentRentalModal({ onClose }) {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ 
-                    backgroundColor: item.isRented ? '#fef3c7' : '#dcfce7', 
-                    color: item.isRented ? '#92400e' : '#166534', 
+                    backgroundColor: item.isPending ? '#fef3c7' : item.isRented ? '#fee2e2' : '#dcfce7', 
+                    color: item.isPending ? '#92400e' : item.isRented ? '#991b1b' : '#166534', 
                     fontSize: '10px', 
                     fontWeight: '800', 
                     padding: '2px 8px', 
                     borderRadius: '9999px' 
                   }}>
-                    {item.isRented ? 'Rental Pending' : 'Available'}
+                    {item.isPending ? 'Rental Pending' : item.isRented ? 'Occupied' : 'Available'}
                   </span>
 
                   <button
                     onClick={() => rentItem(item.id, durationHours)}
-                    disabled={item.isRented}
+                    disabled={isUnavailable}
                     style={{
-                      backgroundColor: item.isRented ? '#94a3b8' : '#10b981',
+                      backgroundColor: isUnavailable ? '#94a3b8' : '#10b981',
                       color: '#ffffff',
                       border: 'none',
                       borderRadius: '10px',
                       padding: '6px 14px',
                       fontSize: '11px',
                       fontWeight: '800',
-                      cursor: item.isRented ? 'not-allowed' : 'pointer'
+                      cursor: isUnavailable ? 'not-allowed' : 'pointer'
                     }}
                   >
-                    {item.isRented ? 'Pending' : 'Rent Now'}
+                    {item.isPending ? 'Pending' : item.isRented ? 'Rented' : 'Rent Now'}
                   </button>
                 </div>
               </div>

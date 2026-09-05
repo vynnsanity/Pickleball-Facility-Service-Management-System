@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 const INITIAL_PROFILE = {
-  fullName: 'Venedict Perez',
+  fullName: 'Venedict',
   avatarUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=Venedict',
   mmr: 3294,
   isMember: true,
@@ -12,11 +12,11 @@ const INITIAL_PROFILE = {
 };
 
 const INITIAL_HISTORY = [
-  { id: 1, opponentName: 'Chris', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Chris' },
-  { id: 2, opponentName: 'Nazzer', result: 'LOSS', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Nazzer' },
-  { id: 3, opponentName: 'Soffy', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soffy' },
-  { id: 4, opponentName: 'Kier', result: 'LOSS', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Kier' },
-  { id: 5, opponentName: 'Owen', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Owen' },
+  { id: 1, opponentName: 'Chris', date: '09/05/2026', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Chris' },
+  { id: 2, opponentName: 'Nazzer', date: '09/04/2026', result: 'LOSS', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Nazzer' },
+  { id: 3, opponentName: 'Soffy', date: '09/03/2026', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soffy' },
+  { id: 4, opponentName: 'Kier', date: '09/01/2026', result: 'LOSS', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Kier' },
+  { id: 5, opponentName: 'Owen', date: '08/29/2026', result: 'WIN', opponentAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Owen' },
 ];
 
 const INITIAL_INVENTORY = [
@@ -30,6 +30,7 @@ const INITIAL_INVENTORY = [
       condition: i % 2 === 0 ? 'Brand New' : 'Excellent',
       desc: 'Pair of 2 graphite carbon paddles with cushioned grip.',
       isRented: false,
+      isPending: false,
       baseRate: 100,
     };
   }),
@@ -43,6 +44,7 @@ const INITIAL_INVENTORY = [
       condition: 'Brand New',
       desc: 'Set of 5 USAPA approved outdoor pickleballs.',
       isRented: false,
+      isPending: false,
       baseRate: 80,
     };
   }),
@@ -56,23 +58,22 @@ const INITIAL_INVENTORY = [
       condition: 'Excellent',
       desc: '1 Automated ball launcher with adjustable speed and oscillation.',
       isRented: false,
+      isPending: false,
       baseRate: 300,
     };
   }),
 ];
 
 const INITIAL_COURTS = [
-  { id: 'court-1', name: 'Court 1', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Climate-controlled court with LED tournament lighting.', open: true, baseRate: 250 },
-  { id: 'court-2', name: 'Court 2', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Standard indoor court with high-visibility boundary lines.', open: true, baseRate: 250 },
-  { id: 'court-3', name: 'Court 3', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Acoustically damped court optimal for video review matches.', open: true, baseRate: 250 },
-  { id: 'court-4', name: 'Court 4', type: 'Outdoor', surface: 'Acrylic Composite', desc: 'Shaded outdoor court with professional wind fence netting.', open: true, baseRate: 200 },
-  { id: 'court-5', name: 'Court 5', type: 'Outdoor', surface: 'Acrylic Composite', desc: 'Outdoor court positioned for daytime tournament play.', open: true, baseRate: 200 },
+  { id: 'court-1', name: 'Court 1', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Climate-controlled court with LED tournament lighting.', open: true, isPending: false, baseRate: 250 },
+  { id: 'court-2', name: 'Court 2', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Standard indoor court with high-visibility boundary lines.', open: true, isPending: false, baseRate: 250 },
+  { id: 'court-3', name: 'Court 3', type: 'Indoor', surface: 'Pro Cushion Hardcourt', desc: 'Acoustically damped court optimal for video review matches.', open: true, isPending: false, baseRate: 250 },
+  { id: 'court-4', name: 'Court 4', type: 'Outdoor', surface: 'Acrylic Composite', desc: 'Shaded outdoor court with professional wind fence netting.', open: true, isPending: false, baseRate: 200 },
+  { id: 'court-5', name: 'Court 5', type: 'Outdoor', surface: 'Acrylic Composite', desc: 'Outdoor court positioned for daytime tournament play.', open: true, isPending: false, baseRate: 200 },
 ];
 
 export function AppProvider({ children }) {
   const [currentRole, setCurrentRole] = useState('player');
-  const [viewType, setViewType] = useState('mobile');
-
   const [profile, setProfile] = useState(INITIAL_PROFILE);
   const [matchHistory, setMatchHistory] = useState(INITIAL_HISTORY);
   const [notifications, setNotifications] = useState([]);
@@ -82,7 +83,7 @@ export function AppProvider({ children }) {
   const [isQueuing, setIsQueuing] = useState(false);
   const [queueTime, setQueueTime] = useState(0);
 
-  const equipments = inventory.filter(item => !item.isRented).length;
+  const equipments = inventory.filter(item => !item.isRented && !item.isPending).length;
 
   useEffect(() => {
     let interval = null;
@@ -107,14 +108,15 @@ export function AppProvider({ children }) {
 
   const cancelQueue = () => setIsQueuing(false);
 
+  // PLAYER RENT ITEM
   const rentItem = (itemId, durationHours) => {
     const item = inventory.find(i => i.id === itemId);
-    if (!item || item.isRented) return;
+    if (!item || item.isRented || item.isPending) return;
 
     const totalPrice = item.baseRate * durationHours;
 
     setInventory(prev => prev.map(invItem => 
-      invItem.id === itemId ? { ...invItem, isRented: true } : invItem
+      invItem.id === itemId ? { ...invItem, isPending: true } : invItem
     ));
 
     setNotifications(prev => [
@@ -134,14 +136,15 @@ export function AppProvider({ children }) {
     alert(`Rental Pending! Request for ${item.name} sent for admin approval.`);
   };
 
+  // PLAYER BOOK COURT
   const bookCourt = (courtId, durationHours) => {
     const court = courts.find(c => c.id === courtId);
-    if (!court || !court.open) return;
+    if (!court || !court.open || court.isPending) return;
 
     const totalPrice = court.baseRate * durationHours;
 
     setCourts(prev => prev.map(c => 
-      c.id === courtId ? { ...c, open: false } : c
+      c.id === courtId ? { ...c, isPending: true } : c
     ));
 
     setNotifications(prev => [
@@ -161,34 +164,69 @@ export function AppProvider({ children }) {
     alert(`Court Booking Pending! Request for ${court.name} sent for admin approval.`);
   };
 
-  const cancelRequest = (notifId, targetId, itemType) => {
+  // ADMIN APPROVE: Removes notification and locks item as Occupied / Rented
+  const approveRequest = (notifId, targetId, itemType) => {
     setNotifications(prev => prev.filter(n => n.id !== notifId));
 
     if (itemType === 'equipment') {
       setInventory(prev => prev.map(invItem => 
-        invItem.id === targetId ? { ...invItem, isRented: false } : invItem
+        invItem.id === targetId ? { ...invItem, isRented: true, isPending: false } : invItem
       ));
     } else if (itemType === 'court') {
       setCourts(prev => prev.map(c => 
-        c.id === targetId ? { ...c, open: true } : c
+        c.id === targetId ? { ...c, open: false, isPending: false } : c
       ));
     }
 
-    alert('Request cancelled successfully.');
+    alert('Request approved! Status updated to Occupied.');
+  };
+
+  // ADMIN REJECT: Updates status to 'Rejected' and frees up item/court
+  const rejectRequest = (notifId, targetId, itemType) => {
+    setNotifications(prev => prev.map(n => 
+      n.id === notifId ? { ...n, status: 'Rejected' } : n
+    ));
+
+    if (itemType === 'equipment') {
+      setInventory(prev => prev.map(invItem => 
+        invItem.id === targetId ? { ...invItem, isRented: false, isPending: false } : invItem
+      ));
+    } else if (itemType === 'court') {
+      setCourts(prev => prev.map(c => 
+        c.id === targetId ? { ...c, open: true, isPending: false } : c
+      ));
+    }
+
+    alert('Request rejected. The player will see the rejection update.');
+  };
+
+  // PLAYER DISMISS / CANCEL: Completely deletes the notification entry
+  const dismissNotification = (notifId, targetId, itemType, isPending) => {
+    setNotifications(prev => prev.filter(n => n.id !== notifId));
+
+    if (isPending) {
+      if (itemType === 'equipment') {
+        setInventory(prev => prev.map(invItem => 
+          invItem.id === targetId ? { ...invItem, isRented: false, isPending: false } : invItem
+        ));
+      } else if (itemType === 'court') {
+        setCourts(prev => prev.map(c => 
+          c.id === targetId ? { ...c, open: true, isPending: false } : c
+        ));
+      }
+    }
   };
 
   const toggleRole = () => setCurrentRole(prev => (prev === 'player' ? 'admin' : 'player'));
-  const toggleViewType = () => setViewType(prev => (prev === 'mobile' ? 'desktop' : 'mobile'));
 
   return (
     <AppContext.Provider value={{
       currentRole, toggleRole,
-      viewType, toggleViewType,
       profile, setProfile,
       matchHistory,
-      notifications, cancelRequest,
-      inventory, rentItem,
-      courts, bookCourt,
+      notifications, approveRequest, rejectRequest, dismissNotification,
+      inventory, setInventory, rentItem,
+      courts, setCourts, bookCourt,
       equipments,
       isQueuing, queueTime,
       startQueue, cancelQueue
