@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 const INITIAL_PROFILE = {
-  fullName: 'Venedict Perez',
+  fullName: 'Venedict',
   avatarUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=Venedict',
   mmr: 3294,
   isMember: true,
