@@ -15,6 +15,8 @@ export default function MobileAdminDashboard({
 }) {
   const pendingNotifications = notifications.filter(n => n.status === 'Pending Approval');
   const hasPending = pendingNotifications.length > 0;
+  const openCourtsCount = courts.filter(c => c.open && !c.isPending).length;
+  const availableEquipmentsCount = inventory.filter(item => !item.isRented && !item.isPending).length;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -57,7 +59,7 @@ export default function MobileAdminDashboard({
         </button>
       </div>
 
-      {/* 2. Live Match Alert Banner with Full Opponent Name Fix */}
+      {/* 2. Live Match Alert Banner */}
       {activeMatch && (
         <div style={{
           backgroundColor: '#001F3F', borderRadius: '20px', padding: '16px', color: '#ffffff', boxShadow: '0 4px 12px rgba(0, 31, 63, 0.25)'
@@ -115,13 +117,48 @@ export default function MobileAdminDashboard({
         REVIEW REQUESTS ({pendingNotifications.length})
       </button>
 
-      {/* 4. Quick Action Cards */}
+      {/* 4. Quick Action Cards - Displays Free/Open Tags */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-        <div onClick={() => setActiveModal('inventory')} style={{ backgroundColor: '#ffffff', borderRadius: '20px', padding: '16px', border: '1px solid #e2e8f0', height: '110px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
+        <div 
+          onClick={() => setActiveModal('inventory')} 
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderRadius: '20px', 
+            padding: '16px', 
+            border: '1px solid #e2e8f0', 
+            height: '110px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'space-between', 
+            cursor: 'pointer',
+            position: 'relative'
+          }}
+        >
+          <span style={{ position: 'absolute', top: '12px', right: '12px', backgroundColor: '#DBE64C', color: '#001F3F', fontSize: '10px', fontWeight: '900', padding: '3px 8px', borderRadius: '6px' }}>
+            {availableEquipmentsCount} Free
+          </span>
           <div style={{ fontSize: '26px' }}>🏓</div>
           <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '800', color: '#001F3F' }}>Manage Inventory</h3>
         </div>
-        <div onClick={() => setActiveModal('courts')} style={{ backgroundColor: '#ffffff', borderRadius: '20px', padding: '16px', border: '1px solid #e2e8f0', height: '110px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
+
+        <div 
+          onClick={() => setActiveModal('courts')} 
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderRadius: '20px', 
+            padding: '16px', 
+            border: '1px solid #e2e8f0', 
+            height: '110px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'space-between', 
+            cursor: 'pointer',
+            position: 'relative'
+          }}
+        >
+          <span style={{ position: 'absolute', top: '12px', right: '12px', backgroundColor: '#DBE64C', color: '#001F3F', fontSize: '10px', fontWeight: '900', padding: '3px 8px', borderRadius: '6px' }}>
+            {openCourtsCount} Open
+          </span>
           <div style={{ fontSize: '26px' }}>🏟️</div>
           <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '800', color: '#001F3F' }}>Manage Courts</h3>
         </div>

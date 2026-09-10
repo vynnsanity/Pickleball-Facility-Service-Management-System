@@ -55,7 +55,7 @@ export default function DesktopAdminDashboard({
         </button>
       </header>
 
-      {/* 2. Live Match Alert Banner with Full Opponent Name Fix */}
+      {/* 2. Live Match Alert Banner */}
       {activeMatch && (
         <div style={{
           backgroundColor: '#001F3F', borderRadius: '20px', padding: '20px', color: '#ffffff', boxShadow: '0 4px 12px rgba(0, 31, 63, 0.3)'
@@ -115,6 +115,7 @@ export default function DesktopAdminDashboard({
           <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Review user booking items</p>
         </div>
 
+        {/* Manage Inventory Card - Displays Available Free Items Tag */}
         <div 
           onClick={() => setActiveModal('inventory')}
           style={{
@@ -124,7 +125,7 @@ export default function DesktopAdminDashboard({
           }}
         >
           <span style={{ position: 'absolute', top: '14px', right: '14px', backgroundColor: '#DBE64C', color: '#001F3F', fontSize: '11px', fontWeight: '900', padding: '3px 8px', borderRadius: '8px' }}>
-            {availableEquipmentsCount} / {inventory.length} Free
+            {availableEquipmentsCount} Free
           </span>
           <div style={{ fontSize: '32px' }}>🏓</div>
           <div>
@@ -133,6 +134,7 @@ export default function DesktopAdminDashboard({
           </div>
         </div>
 
+        {/* Manage Courts Card - Displays Open Courts Tag */}
         <div 
           onClick={() => setActiveModal('courts')}
           style={{
@@ -142,7 +144,7 @@ export default function DesktopAdminDashboard({
           }}
         >
           <span style={{ position: 'absolute', top: '14px', right: '14px', backgroundColor: '#DBE64C', color: '#001F3F', fontSize: '11px', fontWeight: '900', padding: '3px 8px', borderRadius: '8px' }}>
-            {openCourtsCount} / {courts.length} Open
+            {openCourtsCount} Open
           </span>
           <div style={{ fontSize: '32px' }}>🏟️</div>
           <div>
