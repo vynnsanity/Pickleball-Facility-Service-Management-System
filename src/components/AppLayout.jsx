@@ -22,7 +22,7 @@ export default function AppLayout({ children }) {
     <div style={{
       width: '100%',
       minHeight: '100vh',
-      backgroundColor: '#F6F7ED',
+      backgroundColor: '#74C365', // Bold Pickleball Court Green
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start',
@@ -30,7 +30,7 @@ export default function AppLayout({ children }) {
     }}>
       <main style={{
         width: '100%',
-        maxWidth: isDesktop ? '1180px' : '480px', // Enlarged container width
+        maxWidth: isDesktop ? '1180px' : '480px',
         margin: '0 auto',
         padding: isDesktop ? '32px 24px' : '16px',
         boxSizing: 'border-box',

@@ -27,6 +27,11 @@ export default function PlayerDashboard() {
   const [rentDuration, setRentDuration] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // Safe fallback arrays
+  const notificationsList = appData?.notifications || [];
+  const inventoryList = appData?.inventory || [];
+  const courtsList = appData?.courts || [];
+
   const formatTimer = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -44,7 +49,7 @@ export default function PlayerDashboard() {
   };
 
   const confirmRental = () => {
-    if (selectedItem) {
+    if (selectedItem && appData?.rentItem) {
       appData.rentItem(selectedItem.id, rentDuration);
       setSelectedItem(null);
       setActiveModal(null);
@@ -52,7 +57,7 @@ export default function PlayerDashboard() {
   };
 
   const confirmBooking = () => {
-    if (selectedItem) {
+    if (selectedItem && appData?.bookCourt) {
       appData.bookCourt(selectedItem.id, rentDuration);
       setSelectedItem(null);
       setActiveModal(null);
@@ -70,7 +75,7 @@ export default function PlayerDashboard() {
     selectedItem,
     setSelectedItem,
     formatTimer,
-    pendingNotifsCount: appData.notifications.length
+    pendingNotifsCount: notificationsList.length
   };
 
   return (
@@ -80,8 +85,6 @@ export default function PlayerDashboard() {
       ) : (
         <MobilePlayerDashboard {...sharedProps} />
       )}
-
-      {/* ENLARGED MODALS (WEBSITE VIEW: maxWidth 580px - 620px) */}
 
       {/* 1. MATCH PLAY FORMAT MODAL */}
       {activeModal === 'matchmaking' && (
@@ -119,11 +122,11 @@ export default function PlayerDashboard() {
             <div style={{ backgroundColor: '#F6F7ED', borderRadius: '16px', padding: '14px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #DBE64C', marginBottom: '20px' }}>
               <span style={{ fontSize: isDesktop ? '15px' : '13px', fontWeight: '700', color: '#001F3F' }}>Your MMR Rating:</span>
               <span style={{ backgroundColor: '#001F3F', color: '#DBE64C', fontSize: isDesktop ? '14px' : '12px', fontWeight: '900', padding: '4px 14px', borderRadius: '9999px' }}>
-                {appData.profile.mmr} MMR
+                {appData?.profile?.mmr || 3200} MMR
               </span>
             </div>
 
-            <button type="button" onClick={() => { setActiveModal(null); appData.startQueue(playFormat); }} style={{ width: '100%', backgroundColor: '#00804C', color: '#ffffff', border: 'none', borderRadius: '18px', padding: '16px 0', fontSize: '16px', fontWeight: '900', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0, 128, 76, 0.3)' }}>
+            <button type="button" onClick={() => { setActiveModal(null); appData?.startQueue?.(playFormat); }} style={{ width: '100%', backgroundColor: '#00804C', color: '#ffffff', border: 'none', borderRadius: '18px', padding: '16px 0', fontSize: '16px', fontWeight: '900', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0, 128, 76, 0.3)' }}>
               MATCH NOW
             </button>
           </div>
@@ -131,7 +134,7 @@ export default function PlayerDashboard() {
       )}
 
       {/* 2. MATCH FOUND MODAL */}
-      {appData.matchFoundModal && (
+      {appData?.matchFoundModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 31, 63, 0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px', zIndex: 120 }}>
           <div style={{ backgroundColor: '#ffffff', borderRadius: '24px', padding: isDesktop ? '36px 32px' : '28px 24px', width: '100%', maxWidth: isDesktop ? '580px' : '360px', textAlign: 'center', boxSizing: 'border-box' }}>
             <span style={{ display: 'inline-block', backgroundColor: '#DBE64C', color: '#001F3F', fontSize: '12px', fontWeight: '900', padding: '6px 16px', borderRadius: '9999px', marginBottom: '14px' }}>MATCH FOUND</span>
@@ -152,10 +155,10 @@ export default function PlayerDashboard() {
             </div>
 
             <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {appData.notifications.length === 0 ? (
+              {notificationsList.length === 0 ? (
                 <p style={{ textAlign: 'center', color: '#64748b', fontSize: '14px', margin: '30px 0' }}>No notifications right now.</p>
               ) : (
-                appData.notifications.map(notif => (
+                notificationsList.map(notif => (
                   <div key={notif.id} style={{ backgroundColor: '#F6F7ED', border: '1px solid #e2e8f0', borderRadius: '16px', padding: isDesktop ? '16px 20px' : '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                       <span style={{ fontSize: isDesktop ? '15px' : '13px', fontWeight: '800', color: '#001F3F' }}>{notif.title}</span>
@@ -165,7 +168,7 @@ export default function PlayerDashboard() {
                       <span style={{ fontSize: isDesktop ? '13px' : '11px', color: '#1E488F' }}>{notif.duration} • {notif.totalPrice}</span>
                       <span style={{ backgroundColor: '#DBE64C', color: '#001F3F', fontSize: '11px', fontWeight: '800', padding: '3px 10px', borderRadius: '9999px' }}>{notif.status}</span>
                     </div>
-                    <button onClick={() => appData.dismissNotification(notif.id, notif.targetId, notif.itemType, notif.status === 'Pending Approval')} style={{ marginTop: '12px', width: '100%', backgroundColor: '#001F3F', color: '#ffffff', border: 'none', borderRadius: '10px', padding: '10px 0', fontSize: isDesktop ? '13px' : '11px', fontWeight: '800', cursor: 'pointer' }}>
+                    <button onClick={() => appData?.dismissNotification?.(notif.id, notif.targetId, notif.itemType, notif.status === 'Pending Approval')} style={{ marginTop: '12px', width: '100%', backgroundColor: '#001F3F', color: '#ffffff', border: 'none', borderRadius: '10px', padding: '10px 0', fontSize: isDesktop ? '13px' : '11px', fontWeight: '800', cursor: 'pointer' }}>
                       Dismiss Notification
                     </button>
                   </div>
@@ -186,7 +189,7 @@ export default function PlayerDashboard() {
             </div>
 
             <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {appData.inventory.map(item => (
+              {inventoryList.map(item => (
                 <div key={item.id} style={{ backgroundColor: '#F6F7ED', border: '1px solid #e2e8f0', borderRadius: '16px', padding: isDesktop ? '16px 20px' : '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <span style={{ fontSize: isDesktop ? '16px' : '13px', fontWeight: '800', color: '#001F3F', display: 'block' }}>{item.name}</span>
@@ -213,7 +216,7 @@ export default function PlayerDashboard() {
             </div>
 
             <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {appData.courts.map(court => (
+              {courtsList.map(court => (
                 <div key={court.id} style={{ backgroundColor: '#F6F7ED', border: '1px solid #e2e8f0', borderRadius: '16px', padding: isDesktop ? '16px 20px' : '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <span style={{ fontSize: isDesktop ? '16px' : '13px', fontWeight: '800', color: '#001F3F', display: 'block' }}>{court.name}</span>
@@ -230,7 +233,7 @@ export default function PlayerDashboard() {
         </div>
       )}
 
-      {/* 6. RENT CONFIRMATION MODAL (ENLARGED) */}
+      {/* 6. RENT CONFIRMATION MODAL */}
       {activeModal === 'rentConfirm' && selectedItem && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 31, 63, 0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px', zIndex: 110 }}>
           <div style={{ backgroundColor: '#ffffff', borderRadius: '24px', padding: isDesktop ? '36px 32px' : '24px', width: '100%', maxWidth: isDesktop ? '580px' : '360px', boxSizing: 'border-box' }}>
@@ -252,7 +255,7 @@ export default function PlayerDashboard() {
         </div>
       )}
 
-      {/* 7. COURT CONFIRMATION MODAL (ENLARGED) */}
+      {/* 7. COURT CONFIRMATION MODAL */}
       {activeModal === 'courtConfirm' && selectedItem && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 31, 63, 0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px', zIndex: 110 }}>
           <div style={{ backgroundColor: '#ffffff', borderRadius: '24px', padding: isDesktop ? '36px 32px' : '24px', width: '100%', maxWidth: isDesktop ? '580px' : '360px', boxSizing: 'border-box' }}>
